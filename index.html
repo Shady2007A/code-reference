@@ -1,0 +1,1328 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a1120" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icon-192.png" />
+    <title>Code Reference</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧾</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css"
+    />
+    <style>
+      :root {
+        --bg: #0a1120;
+        --panel: #0f1a2f;
+        --panel2: #13213b;
+        --line: #1d2e4d;
+        --text: #d4e3ff;
+        --muted: #7f96bd;
+        --accent: #4da3ff;
+        --accent-soft: #16365f;
+        --danger: #e5736f;
+        --code-bg: #0a1324;
+        --r: 10px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .mono {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+      }
+
+      /* ---------- auth ---------- */
+      #auth {
+        min-height: 100%;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+      .auth-card {
+        width: 100%;
+        max-width: 400px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 28px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+      .brand .mark {
+        font-family: "JetBrains Mono", monospace;
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-radius: 8px;
+        padding: 2px 9px;
+        font-size: 16px;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 20px;
+      }
+      .tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 3px;
+        margin-bottom: 18px;
+      }
+      .tabs button {
+        background: none;
+        border: 0;
+        border-radius: 6px;
+        padding: 8px;
+        color: var(--muted);
+      }
+      .tabs button.on {
+        background: var(--accent-soft);
+        color: var(--text);
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        color: var(--muted);
+        margin: 12px 0 5px;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: #4d6590;
+      }
+      .btn {
+        background: var(--accent);
+        color: #04101f;
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 16px;
+        font-weight: 600;
+      }
+      .btn:hover {
+        filter: brightness(1.08);
+      }
+      .btn.full {
+        width: 100%;
+        margin-top: 18px;
+      }
+      .btn.ghost {
+        background: var(--panel2);
+        color: var(--text);
+        border: 1px solid var(--line);
+        font-weight: 500;
+      }
+      .btn.small {
+        padding: 5px 11px;
+        font-size: 13px;
+      }
+      .err {
+        color: var(--danger);
+        font-size: 13px;
+        min-height: 18px;
+        margin: 10px 0 0;
+      }
+      .demo {
+        margin-top: 16px;
+        font-size: 12.5px;
+        color: var(--muted);
+        background: var(--bg);
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+
+      /* ---------- sync status ---------- */
+      .sync {
+        font-size: 12.5px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 2px 10px;
+        white-space: nowrap;
+        background: var(--bg);
+      }
+      .sync.ok {
+        color: #7fd0a8;
+        border-color: #1f4a3b;
+      }
+      .sync.busy {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .sync.off {
+        color: #e0b86e;
+        border-color: #5a4720;
+      }
+
+      /* ---------- app shell ---------- */
+      #app {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        grid-template-rows: auto 1fr;
+        min-height: 100%;
+      }
+      header {
+        grid-column: 1/-1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel);
+      }
+      header .who {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        min-width: 0;
+      }
+      header .who span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      aside {
+        border-right: 1px solid var(--line);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        overflow: auto;
+      }
+      aside h3 {
+        margin: 0 0 8px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+      .langs {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .lang {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: none;
+        border: 0;
+        border-radius: 8px;
+        padding: 7px 10px;
+        text-align: left;
+        color: var(--text);
+      }
+      .lang:hover {
+        background: var(--panel2);
+      }
+      .lang.on {
+        background: var(--accent-soft);
+      }
+      .lang small {
+        color: var(--muted);
+      }
+      .add-lang {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .add-lang input {
+        padding: 7px 10px;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tag {
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 2px 10px;
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .tag.on {
+        background: var(--accent-soft);
+        color: var(--text);
+        border-color: var(--accent);
+      }
+      main {
+        padding: 20px;
+        overflow: auto;
+      }
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+      .toolbar input {
+        flex: 1;
+      }
+      .empty {
+        border: 1px dashed var(--line);
+        border-radius: var(--r);
+        padding: 36px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      /* ---------- snippet card ---------- */
+      .snip {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        margin-bottom: 18px;
+        overflow: hidden;
+      }
+      .snip-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel2);
+      }
+      .dots {
+        display: flex;
+        gap: 6px;
+      }
+      .dots i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #2a4268;
+        display: block;
+      }
+      .snip-title {
+        font-weight: 500;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .badge {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: var(--accent);
+        background: var(--accent-soft);
+        border-radius: 6px;
+        padding: 1px 8px;
+      }
+      .acts {
+        display: flex;
+        gap: 6px;
+      }
+      .editor {
+        display: flex;
+        background: var(--code-bg);
+        overflow: auto;
+      }
+      .gutter {
+        padding: 14px 10px 14px 14px;
+        text-align: right;
+        color: #3f5985;
+        user-select: none;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13.5px;
+        line-height: 1.6;
+        white-space: pre;
+      }
+      .editor pre {
+        margin: 0;
+        padding: 14px 16px 14px 6px;
+        flex: 1;
+      }
+      .editor code.hljs {
+        background: transparent;
+        padding: 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13.5px;
+        line-height: 1.6;
+      }
+      .notes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+      }
+      .note {
+        padding: 12px 16px;
+      }
+      .note + .note {
+        border-left: 1px solid var(--line);
+      }
+      .note h4 {
+        margin: 0 0 4px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--accent);
+      }
+      .note p {
+        margin: 0;
+        white-space: pre-wrap;
+        color: var(--text);
+      }
+      .note p.none {
+        color: #4d6590;
+      }
+      .snip-tags {
+        padding: 0 16px 12px;
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      /* ---------- modal ---------- */
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(3, 8, 18, 0.72);
+        display: grid;
+        place-items: center;
+        padding: 16px;
+        z-index: 10;
+      }
+      .sheet {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        width: 100%;
+        max-width: 680px;
+        max-height: 94vh;
+        overflow: auto;
+        padding: 22px;
+      }
+      .sheet h2 {
+        margin: 0 0 6px;
+        font-size: 18px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .sheet textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      .sheet textarea.code {
+        min-height: 200px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13.5px;
+        tab-size: 4;
+        white-space: pre;
+      }
+      .sheet .foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .toast {
+        position: fixed;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--accent-soft);
+        border: 1px solid var(--accent);
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13.5px;
+        z-index: 20;
+      }
+
+      @media (max-width: 760px) {
+        #app {
+          grid-template-columns: 1fr;
+        }
+        aside {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+          padding: 12px;
+        }
+        .langs {
+          flex-direction: row;
+          overflow-x: auto;
+          gap: 6px;
+          padding-bottom: 4px;
+        }
+        .lang {
+          white-space: nowrap;
+          gap: 8px;
+          border: 1px solid var(--line);
+        }
+        .notes {
+          grid-template-columns: 1fr;
+        }
+        .note + .note {
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+        .row {
+          grid-template-columns: 1fr;
+        }
+        header .who #who {
+          display: none;
+        }
+      }
+      .forgot-link {
+        display: block;
+        margin-top: 8px;
+        padding: 5px 0;
+        background: none;
+        border: none;
+        color: #60a5fa;
+        cursor: pointer;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============ AUTH ============ -->
+    <section id="auth" hidden>
+      <div class="auth-card">
+        <div class="brand">
+          <span class="mark">&lt;/&gt;</span> Code Reference
+        </div>
+        <p class="sub">Your own library of code you have learned.</p>
+        <div class="tabs">
+          <button id="tab-in" class="on" type="button">Sign in</button>
+          <button id="tab-up" type="button">Create account</button>
+        </div>
+        <div id="name-wrap" hidden>
+          <label for="a-name">Name</label>
+          <input id="a-name" autocomplete="name" placeholder="Shadi" />
+        </div>
+        <label for="a-email">Email</label>
+        <input
+          id="a-email"
+          type="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+        />
+        <label for="a-pass">Password</label>
+        <input
+          id="a-pass"
+          type="password"
+          autocomplete="current-password"
+          placeholder="At least 6 characters"
+        />
+        <button type="button" id="forgot-pass" class="forgot-link">
+          Forgot Password?
+        </button>
+        <p class="err" id="a-err" role="alert"></p>
+        <button class="btn full" id="a-go" type="button">Sign in</button>
+        <div class="demo" id="demo-note" hidden>
+          Demo mode: Firebase is not set up yet, so accounts and snippets are
+          saved only in this browser. Follow the setup steps to sync across
+          devices.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ APP ============ -->
+    <div id="app" hidden>
+      <header>
+        <div class="brand">
+          <span class="mark">&lt;/&gt;</span> Code Reference
+        </div>
+        <div class="who">
+          <span class="sync" id="sync"></span><span id="who"></span
+          ><button class="btn ghost small" id="logout" type="button">
+            Sign out
+          </button>
+        </div>
+      </header>
+      <aside>
+        <div>
+          <h3>Languages</h3>
+          <div class="langs" id="langs"></div>
+          <div class="add-lang">
+            <input
+              id="new-lang"
+              placeholder="Add a language"
+              aria-label="New language name"
+            />
+            <button class="btn ghost small" id="add-lang" type="button">
+              Add
+            </button>
+          </div>
+        </div>
+        <div>
+          <h3>Tags</h3>
+          <div class="tags" id="tags"></div>
+        </div>
+      </aside>
+      <main>
+        <div class="toolbar">
+          <input
+            id="search"
+            type="search"
+            placeholder="Search title, code, notes…"
+            aria-label="Search snippets"
+          />
+          <button class="btn" id="new-snip" type="button">New snippet</button>
+        </div>
+        <div id="list"></div>
+      </main>
+    </div>
+
+    <!-- ============ MODAL ============ -->
+    <div class="modal" id="modal" hidden>
+      <div
+        class="sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="m-title"
+      >
+        <h2 id="m-title">New snippet</h2>
+        <div class="row">
+          <div>
+            <label for="f-title">Title</label
+            ><input id="f-title" placeholder="Read a file line by line" />
+          </div>
+          <div>
+            <label for="f-lang">Language</label
+            ><select id="f-lang"></select>
+          </div>
+        </div>
+        <label for="f-code">Code</label>
+        <textarea
+          id="f-code"
+          class="code"
+          spellcheck="false"
+          placeholder="Paste or type your code"
+        ></textarea>
+        <label for="f-what">What it does</label>
+        <textarea
+          id="f-what"
+          placeholder="Explain in your own words"
+        ></textarea>
+        <label for="f-notes">Notes</label>
+        <textarea
+          id="f-notes"
+          placeholder="Gotchas, links, things to remember"
+        ></textarea>
+        <label for="f-tags">Tags (comma separated)</label>
+        <input id="f-tags" placeholder="loops, files, security" />
+        <div class="foot">
+          <button class="btn ghost" id="m-cancel" type="button">Cancel</button>
+          <button class="btn" id="m-save" type="button">Save snippet</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script>
+      /* =====================================================================
+   1) PASTE YOUR FIREBASE CONFIG HERE (see setup steps).
+   Leave apiKey empty to run in local demo mode.
+   ===================================================================== */
+      const firebaseConfig = {
+        apiKey: "AIzaSyAIThyyfgEZkLg0OCzhkPJmro-FvsKuIPM",
+        authDomain: "code-reference-bba54.firebaseapp.com",
+        projectId: "code-reference-bba54",
+        appId: "1:1010216485509:web:9d77021b6ad898c9631fec",
+      };
+      /* ===================================================================== */
+
+      const $ = (s) => document.querySelector(s);
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const uid = () =>
+        Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      const USE_FIREBASE = !!firebaseConfig.apiKey;
+
+      /* ---------- defaults ---------- */
+      const DEFAULT_LANGS = ["Python", "JavaScript", "C", "Bash"];
+      const welcomeSnippet = () => ({
+        id: uid(),
+        title: "Hello, world",
+        lang: "Python",
+        code: '# Print text to the screen\nname = "Shadi"\nprint(f"Hello, {name}!")\n\nfor i in range(3):\n    print(i)',
+        what: "Stores a name in a variable, prints a greeting, then prints 0, 1, 2 with a for loop.",
+        notes: "f-strings need Python 3.6 or newer.\nrange(3) stops before 3.",
+        tags: ["basics", "loops"],
+        created: Date.now(),
+      });
+
+      /* ---------- backend: Firebase (real-time + offline) or local demo ---------- */
+      let backend;
+      if (USE_FIREBASE) {
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth(),
+          db = firebase.firestore(),
+          FV = firebase.firestore.FieldValue;
+        // Keep a copy of your data on this device so the app works offline.
+        db.enablePersistence({ synchronizeTabs: true }).catch((e) =>
+          console.warn("Offline cache unavailable:", e.code),
+        );
+        const wrap = (u) =>
+          u
+            ? { id: u.uid, email: u.email, name: u.displayName || u.email }
+            : null;
+        const userRef = (u) => db.collection("users").doc(u.id);
+        const snipCol = (u) => userRef(u).collection("snippets");
+        backend = {
+          onAuth: (cb) => auth.onAuthStateChanged((u) => cb(wrap(u))),
+          async signUp(email, pass, name) {
+            const c = await auth.createUserWithEmailAndPassword(email, pass);
+            if (name) await c.user.updateProfile({ displayName: name });
+          },
+          async signIn(email, pass) {
+            await auth.signInWithEmailAndPassword(email, pass);
+          },
+          signOut: () => auth.signOut(),
+
+          // Live listeners: any change on any device (or queued offline) arrives here.
+          watch(u, cb) {
+            let langs = null,
+              snips = null,
+              pending = 0,
+              cached = true,
+              migrating = false;
+            const emit = () => {
+              if (langs && snips)
+                cb({ languages: langs, snippets: snips }, { pending, cached });
+            };
+            const fail = (error) => cb(null, { error });
+
+            const un1 = userRef(u).onSnapshot(
+              { includeMetadataChanges: true },
+              (d) => {
+                if (!d.exists) {
+                  langs = [];
+                  if (!d.metadata.fromCache) {
+                    // server confirmed: brand-new account
+                    userRef(u)
+                      .set({ languages: DEFAULT_LANGS })
+                      .catch(() => {});
+                    const w = welcomeSnippet();
+                    snipCol(u)
+                      .doc(w.id)
+                      .set(w)
+                      .catch(() => {});
+                  }
+                  emit();
+                  return;
+                }
+                const data = d.data();
+                langs = data.languages || [];
+                if (Array.isArray(data.snippets) && !migrating) {
+                  // move old single-document data into per-snippet documents
+                  migrating = true;
+                  const batch = db.batch();
+                  data.snippets.forEach((x) =>
+                    batch.set(snipCol(u).doc(x.id), x),
+                  );
+                  batch.update(userRef(u), { snippets: FV.delete() });
+                  batch.commit().catch(() => {});
+                }
+                emit();
+              },
+              fail,
+            );
+
+            const un2 = snipCol(u).onSnapshot(
+              { includeMetadataChanges: true },
+              (q) => {
+                snips = q.docs.map((x) => x.data());
+                pending = q.docs.filter(
+                  (x) => x.metadata.hasPendingWrites,
+                ).length;
+                cached = q.metadata.fromCache;
+                emit();
+              },
+              fail,
+            );
+
+            return () => {
+              un1();
+              un2();
+            };
+          },
+          // Writes land in the local cache instantly and upload when the connection is back.
+          saveSnippet: (u, s) => snipCol(u).doc(s.id).set(s),
+          deleteSnippet: (u, id) => snipCol(u).doc(id).delete(),
+          addLanguage: (u, name) =>
+            userRef(u).set({ languages: FV.arrayUnion(name) }, { merge: true }),
+        };
+      } else {
+        let listener = () => {},
+          watcher = null;
+        const users = () =>
+          JSON.parse(localStorage.getItem("cr_users") || "{}");
+        const sha = async (t) =>
+          [
+            ...new Uint8Array(
+              await crypto.subtle.digest(
+                "SHA-256",
+                new TextEncoder().encode(t),
+              ),
+            ),
+          ]
+            .map((b) => b.toString(16).padStart(2, "0"))
+            .join("");
+        const sess = () => {
+          const e = localStorage.getItem("cr_session");
+          const u = e && users()[e];
+          return u ? { id: e, email: e, name: u.name || e } : null;
+        };
+        const key = (u) => "cr_data_" + u.id;
+        const read = (u) => JSON.parse(localStorage.getItem(key(u)));
+        const write = (u, st) => {
+          localStorage.setItem(key(u), JSON.stringify(st));
+          if (watcher) watcher(st, { pending: 0 });
+        };
+        backend = {
+          onAuth(cb) {
+            listener = cb;
+            cb(sess());
+          },
+          async signUp(email, pass, name) {
+            const us = users();
+            email = email.toLowerCase();
+            if (us[email]) throw { code: "auth/email-already-in-use" };
+            us[email] = { hash: await sha(pass), name };
+            localStorage.setItem("cr_users", JSON.stringify(us));
+            localStorage.setItem("cr_session", email);
+            listener(sess());
+          },
+          async signIn(email, pass) {
+            email = email.toLowerCase();
+            const u = users()[email];
+            if (!u || u.hash !== (await sha(pass)))
+              throw { code: "auth/invalid-credential" };
+            localStorage.setItem("cr_session", email);
+            listener(sess());
+          },
+          async signOut() {
+            localStorage.removeItem("cr_session");
+            listener(null);
+          },
+          watch(u, cb) {
+            watcher = cb;
+            let st = read(u);
+            if (!st) {
+              st = {
+                languages: DEFAULT_LANGS.slice(),
+                snippets: [welcomeSnippet()],
+              };
+              localStorage.setItem(key(u), JSON.stringify(st));
+            }
+            cb(st, { pending: 0 });
+            return () => {
+              watcher = null;
+            };
+          },
+          async saveSnippet(u, s) {
+            const st = read(u),
+              i = st.snippets.findIndex((x) => x.id === s.id);
+            if (i >= 0) st.snippets[i] = s;
+            else st.snippets.push(s);
+            write(u, st);
+          },
+          async deleteSnippet(u, id) {
+            const st = read(u);
+            st.snippets = st.snippets.filter((x) => x.id !== id);
+            write(u, st);
+          },
+          async addLanguage(u, name) {
+            const st = read(u);
+            if (!st.languages.includes(name)) st.languages.push(name);
+            write(u, st);
+          },
+        };
+      }
+
+      /* ---------- state ---------- */
+      let user = null,
+        state = { languages: [], snippets: [] },
+        unwatch = null,
+        syncInfo = { pending: 0 };
+      let view = { lang: "all", tag: null, q: "" };
+      let editingId = null;
+
+      const syncErr = (e) => toast("Could not save: " + (e.code || e.message));
+
+      function onData(st, meta) {
+        if (meta && meta.error) {
+          const c = meta.error.code;
+          toast(
+            c === "permission-denied"
+              ? "Access denied. Check the Firestore rules."
+              : "Sync error: " + (c || meta.error.message),
+          );
+          return;
+        }
+        state = st;
+        syncInfo = meta;
+        render();
+        renderSync();
+      }
+
+      function renderSync() {
+        const el = $("#sync");
+        if (!USE_FIREBASE) {
+          el.className = "sync";
+          el.textContent = "This device only";
+          return;
+        }
+        const n = syncInfo.pending || 0;
+        if (!navigator.onLine) {
+          el.className = "sync off";
+          el.textContent = n
+            ? "Offline · " + n + " waiting to sync"
+            : "Offline";
+        } else if (n) {
+          el.className = "sync busy";
+          el.textContent = "Syncing…";
+        } else {
+          el.className = "sync ok";
+          el.textContent = "Synced";
+        }
+      }
+      window.addEventListener("online", renderSync);
+      window.addEventListener("offline", renderSync);
+
+      /* ---------- highlighting ---------- */
+      const LANG_IDS = {
+        python: "python",
+        javascript: "javascript",
+        js: "javascript",
+        typescript: "typescript",
+        ts: "typescript",
+        c: "c",
+        "c++": "cpp",
+        cpp: "cpp",
+        "c#": "csharp",
+        java: "java",
+        bash: "bash",
+        shell: "bash",
+        sh: "bash",
+        sql: "sql",
+        html: "xml",
+        xml: "xml",
+        css: "css",
+        php: "php",
+        rust: "rust",
+        go: "go",
+        kotlin: "kotlin",
+        swift: "swift",
+        ruby: "ruby",
+        powershell: "powershell",
+        json: "json",
+        lua: "lua",
+      };
+      function highlight(code, lang) {
+        const id = LANG_IDS[lang.toLowerCase()];
+        try {
+          if (id && hljs.getLanguage(id))
+            return hljs.highlight(code, { language: id }).value;
+          return hljs.highlightAuto(code).value;
+        } catch {
+          return esc(code);
+        }
+      }
+
+      /* ---------- rendering ---------- */
+      function filtered() {
+        const q = view.q.trim().toLowerCase();
+        return state.snippets
+          .filter(
+            (s) =>
+              (view.lang === "all" || s.lang === view.lang) &&
+              (!view.tag || s.tags.includes(view.tag)) &&
+              (!q ||
+                [s.title, s.code, s.what, s.notes, s.tags.join(" ")]
+                  .join("\n")
+                  .toLowerCase()
+                  .includes(q)),
+          )
+          .sort((a, b) => b.created - a.created);
+      }
+
+      function renderSide() {
+        const count = (l) =>
+          state.snippets.filter((s) => l === "all" || s.lang === l).length;
+        const item = (name, label) =>
+          `<button class="lang ${view.lang === name ? "on" : ""}" data-lang="${esc(name)}">${esc(label)} <small>${count(name)}</small></button>`;
+        $("#langs").innerHTML =
+          item("all", "All") + state.languages.map((l) => item(l, l)).join("");
+        const tags = [...new Set(state.snippets.flatMap((s) => s.tags))].sort();
+        $("#tags").innerHTML = tags.length
+          ? tags
+              .map(
+                (t) =>
+                  `<button class="tag ${view.tag === t ? "on" : ""}" data-tag="${esc(t)}">${esc(t)}</button>`,
+              )
+              .join("")
+          : '<span class="tag" style="border-style:dashed">No tags yet</span>';
+      }
+
+      function renderList() {
+        const items = filtered();
+        if (!items.length) {
+          $("#list").innerHTML =
+            `<div class="empty">${state.snippets.length ? "No snippets match your filters." : "Nothing here yet. Add your first snippet."}</div>`;
+          return;
+        }
+        $("#list").innerHTML = items
+          .map((s) => {
+            const lines = s.code.split("\n").length;
+            const nums = Array.from({ length: lines }, (_, i) => i + 1).join(
+              "\n",
+            );
+            return `<article class="snip" data-id="${s.id}">
+      <div class="snip-head">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="snip-title">${esc(s.title)}</div>
+        <span class="badge">${esc(s.lang)}</span>
+        <div class="acts">
+          <button class="btn ghost small" data-act="copy">Copy</button>
+          <button class="btn ghost small" data-act="edit">Edit</button>
+          <button class="btn ghost small" data-act="del">Delete</button>
+        </div>
+      </div>
+      <div class="editor"><div class="gutter">${nums}</div><pre><code class="hljs">${highlight(s.code, s.lang)}</code></pre></div>
+      <div class="notes">
+        <div class="note"><h4>What it does</h4><p class="${s.what ? "" : "none"}">${s.what ? esc(s.what) : "No explanation yet."}</p></div>
+        <div class="note"><h4>Notes</h4><p class="${s.notes ? "" : "none"}">${s.notes ? esc(s.notes) : "No notes yet."}</p></div>
+      </div>
+      ${s.tags.length ? `<div class="snip-tags">${s.tags.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : '<div style="height:4px"></div>'}
+    </article>`;
+          })
+          .join("");
+      }
+
+      const render = () => {
+        renderSide();
+        renderList();
+      };
+
+      function toast(msg) {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 1800);
+      }
+
+      /* ---------- events: app ---------- */
+      $("#langs").addEventListener("click", (e) => {
+        const b = e.target.closest("[data-lang]");
+        if (b) {
+          view.lang = b.dataset.lang;
+          render();
+        }
+      });
+      $("#tags").addEventListener("click", (e) => {
+        const b = e.target.closest("[data-tag]");
+        if (b) {
+          view.tag = view.tag === b.dataset.tag ? null : b.dataset.tag;
+          render();
+        }
+      });
+      $("#search").addEventListener("input", (e) => {
+        view.q = e.target.value;
+        renderList();
+      });
+
+      function addLanguage() {
+        const name = $("#new-lang").value.trim();
+        if (!name) return;
+        if (
+          state.languages.some((l) => l.toLowerCase() === name.toLowerCase())
+        ) {
+          toast("That language is already in the list");
+          return;
+        }
+        backend.addLanguage(user, name).catch(syncErr);
+        $("#new-lang").value = "";
+        view.lang = name;
+        render();
+      }
+      $("#add-lang").onclick = addLanguage;
+      $("#new-lang").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") addLanguage();
+      });
+
+      $("#list").addEventListener("click", async (e) => {
+        const b = e.target.closest("[data-act]");
+        if (!b) return;
+        const id = b.closest(".snip").dataset.id,
+          s = state.snippets.find((x) => x.id === id);
+        if (b.dataset.act === "copy") {
+          try {
+            await navigator.clipboard.writeText(s.code);
+            toast("Code copied");
+          } catch {
+            toast("Copy failed");
+          }
+        } else if (b.dataset.act === "edit") openModal(s);
+        else if (
+          b.dataset.act === "del" &&
+          confirm('Delete "' + s.title + '"?')
+        ) {
+          backend.deleteSnippet(user, id).catch(syncErr);
+        }
+      });
+
+      /* ---------- modal ---------- */
+      function openModal(s) {
+        editingId = s ? s.id : null;
+        $("#m-title").textContent = s ? "Edit snippet" : "New snippet";
+        $("#f-lang").innerHTML = state.languages
+          .map((l) => `<option>${esc(l)}</option>`)
+          .join("");
+        $("#f-title").value = s ? s.title : "";
+        $("#f-lang").value = s
+          ? s.lang
+          : view.lang !== "all"
+            ? view.lang
+            : state.languages[0];
+        $("#f-code").value = s ? s.code : "";
+        $("#f-what").value = s ? s.what : "";
+        $("#f-notes").value = s ? s.notes : "";
+        $("#f-tags").value = s ? s.tags.join(", ") : "";
+        $("#modal").hidden = false;
+        $("#f-title").focus();
+      }
+      const closeModal = () => {
+        $("#modal").hidden = true;
+      };
+      $("#new-snip").onclick = () => openModal(null);
+      $("#m-cancel").onclick = closeModal;
+      $("#modal").addEventListener("mousedown", (e) => {
+        if (e.target.id === "modal") closeModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !$("#modal").hidden) closeModal();
+      });
+      $("#f-code").addEventListener("keydown", (e) => {
+        if (e.key !== "Tab") return;
+        e.preventDefault();
+        const t = e.target,
+          a = t.selectionStart;
+        t.value = t.value.slice(0, a) + "    " + t.value.slice(t.selectionEnd);
+        t.selectionStart = t.selectionEnd = a + 4;
+      });
+      $("#m-save").onclick = () => {
+        const title = $("#f-title").value.trim(),
+          code = $("#f-code").value.replace(/\s+$/, "");
+        if (!title || !code) {
+          toast("Add a title and some code");
+          return;
+        }
+        const data = {
+          title,
+          code,
+          lang: $("#f-lang").value,
+          what: $("#f-what").value.trim(),
+          notes: $("#f-notes").value.trim(),
+          tags: [
+            ...new Set(
+              $("#f-tags")
+                .value.split(",")
+                .map((t) => t.trim().toLowerCase())
+                .filter(Boolean),
+            ),
+          ],
+        };
+        const old = editingId && state.snippets.find((x) => x.id === editingId);
+        const snip = old
+          ? { ...old, ...data }
+          : { id: uid(), created: Date.now(), ...data };
+        backend.saveSnippet(user, snip).catch(syncErr);
+        closeModal();
+        toast("Snippet saved");
+      };
+
+      /* ---------- auth UI ---------- */
+      let mode = "in";
+      function setMode(m) {
+        mode = m;
+        $("#tab-in").classList.toggle("on", m === "in");
+        $("#tab-up").classList.toggle("on", m === "up");
+        $("#name-wrap").hidden = m === "in";
+        $("#a-go").textContent = m === "in" ? "Sign in" : "Create account";
+        $("#a-pass").autocomplete =
+          m === "in" ? "current-password" : "new-password";
+        $("#a-err").textContent = "";
+      }
+      $("#tab-in").onclick = () => setMode("in");
+      $("#tab-up").onclick = () => setMode("up");
+      const AUTH_MSG = {
+        "auth/invalid-email": "That email address is not valid.",
+        "auth/missing-password": "Enter your password.",
+        "auth/weak-password": "Use a password with at least 6 characters.",
+        "auth/email-already-in-use":
+          "An account with this email already exists. Try signing in.",
+        "auth/invalid-credential": "Wrong email or password.",
+        "auth/user-not-found": "Wrong email or password.",
+        "auth/wrong-password": "Wrong email or password.",
+        "auth/too-many-requests":
+          "Too many attempts. Wait a minute and try again.",
+        "auth/network-request-failed":
+          "No connection. Check your internet and try again.",
+      };
+      async function submitAuth() {
+        const email = $("#a-email").value.trim(),
+          pass = $("#a-pass").value,
+          name = $("#a-name").value.trim();
+        const err = $("#a-err");
+        err.textContent = "";
+        if (!email || !pass) {
+          err.textContent = "Enter your email and password.";
+          return;
+        }
+        if (mode === "up" && pass.length < 6) {
+          err.textContent = AUTH_MSG["auth/weak-password"];
+          return;
+        }
+        $("#a-go").disabled = true;
+        try {
+          mode === "in"
+            ? await backend.signIn(email, pass)
+            : await backend.signUp(email, pass, name);
+        } catch (e) {
+          err.textContent =
+            AUTH_MSG[e.code] ||
+            "Something went wrong: " + (e.code || e.message);
+        }
+        $("#a-go").disabled = false;
+      }
+      $("#a-go").onclick = submitAuth;
+      ["a-email", "a-pass", "a-name"].forEach((id) =>
+        $("#" + id).addEventListener("keydown", (e) => {
+          if (e.key === "Enter") submitAuth();
+        }),
+      );
+      $("#forgot-pass").onclick = async () => {
+        const email = $("#a-email").value.trim();
+        const err = $("#a-err");
+
+        err.textContent = "";
+
+        if (!email) {
+          err.textContent = "Enter your email first.";
+          return;
+        }
+
+        try {
+          await firebase.auth().sendPasswordResetEmail(email);
+          err.textContent = "Password reset email sent! Check your inbox.";
+        } catch (e) {
+          err.textContent = AUTH_MSG[e.code] || "Could not send reset email.";
+        }
+      };
+      $("#logout").onclick = () => backend.signOut();
+      $("#demo-note").hidden = USE_FIREBASE;
+
+      /* ---------- boot ---------- */
+      backend.onAuth((u) => {
+        user = u;
+        if (unwatch) {
+          unwatch();
+          unwatch = null;
+        }
+        if (!u) {
+          state = { languages: [], snippets: [] };
+          $("#app").hidden = true;
+          $("#auth").hidden = false;
+          $("#a-pass").value = "";
+          closeModal();
+          return;
+        }
+        $("#auth").hidden = true;
+        view = { lang: "all", tag: null, q: "" };
+        $("#search").value = "";
+        $("#who").textContent = u.name;
+        $("#app").hidden = false;
+        render();
+        renderSync();
+        unwatch = backend.watch(u, onData);
+      });
+
+      // Lets the app open with no connection once it has been visited online.
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () =>
+          navigator.serviceWorker.register("sw.js").catch(() => {}),
+        );
+      }
+    </script>
+  </body>
+</html>
